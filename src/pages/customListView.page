@@ -1,0 +1,105 @@
+<apex:page standardController="Case_Effort__c" extensions="customListView" tabStyle="Case_Effort__c" recordSetVar="CaseEffort">  
+    <style type="text/css">
+        .fFooter {
+            padding-left: 8px;
+            padding-top: 2px;
+            text-align: left;
+            font-size: 91%;
+        } 
+        
+        .fFooter a {
+            vertical-align: -1px;
+        }
+        a {
+            color: #015ba7;
+            text-decoration: none;
+            font-size: 1.2em;
+        }  
+        
+        .outputLink a {
+            text-decoration: underline; 
+            
+        } 
+        .pbBody a{
+            text-decoration: underline; 
+            font-size:12px;
+        }
+        .dataCell select{
+            display:none !important;
+        }
+        .showTotal {
+            margin-left: 540px;
+        }
+        
+    </style>
+    <apex:sectionHeader title="Case Effort" subtitle="Home"/>
+      
+    <apex:form > 
+    
+        <b>View :</b><apex:selectList id="chooseColor" value="{!selectedval}" size="1">
+            <apex:selectOption itemValue="All" itemLabel="All"/>
+            <apex:selectOption itemValue="This Week" itemLabel="This Week"/>
+            <apex:selectOption itemValue="Today" itemLabel="Today"/>
+        </apex:selectList> 
+        <Apex:commandButton value=" Go " action="{!showListvalue}" />   
+        
+        <span class="fFooter">
+            <a href="/ui/list/FilterEditPage?id=00Bi0000000UciC&amp;retURL=%2Fa03&amp;cancelURL=%2Fa03%2Fo">Edit</a> | 
+            <a href="/ui/list/FilterEditPage?ftype=01Ii00000009Que&amp;retURL=%2Fa03&amp;cancelURL=%2Fa03%2Fo">Create New View</a>
+        </span>
+        
+        <br /><br />
+        
+        <apex:pageBlock rendered="{!showOrHideFlag}" title="Recent Case Effort">
+            <apex:pageBlockButtons location="Top">
+                <apex:commandButton value="New" style="padding: 3px 5px 3px 5px;" />
+            </apex:pageBlockButtons>
+            
+            <apex:pageBlockTable value="{!cec}" var="itemCEC">
+                <apex:column headerValue="Case Effort Name">                    
+                    <apex:outputLink value="/{!itemCEC.id}" styleClass="outputLink"><apex:outputText value="{!itemCEC.name}"/></apex:outputLink>
+                </apex:column>
+            </apex:pageBlockTable>        
+        </apex:pageBlock>
+        
+        <apex:pageBlock rendered="{!NOT(showOrHideFlag)}">
+            <apex:pageBlockButtons location="Top">
+                <apex:commandButton style="margin-left: 69px;padding: 5px 20px;margin-bottom: 10px;" value="Save" action="{!Save}"/><br />
+                <b> Total time Spent : </b><apex:outputText >{!sumHours}</apex:outputText> Minutes  <br />
+            </apex:pageBlockButtons>
+            
+            <apex:pageBlockTable value="{!accountList}" var="item">
+                <apex:column headerValue="Case Effort Name">                    
+                    <apex:outputLink value="{!item.a.id}"><apex:outputText value="{!item.a.name}"/></apex:outputLink>
+                </apex:column>  
+                <apex:column headerValue="Case Number">                    
+                    <apex:outputLink value="{!item.a.Case__r.id}"><apex:outputText value="{!item.a.Case__r.CaseNumber}"/></apex:outputLink>
+                </apex:column> 
+                <apex:column headerValue="Case Account">
+                    <apex:inputField value="{!item.a.Case_Account__c}" />
+                </apex:column> 
+                <apex:column headerValue="Case Subject">
+                    <apex:inputField value="{!item.a.Case_Subject__c}" />
+                </apex:column>  
+                <apex:column headerValue="Close Date">
+                    <apex:inputField value="{!item.a.Case_Date__c}" />
+                </apex:column>
+                <apex:column headerValue="Case Effort Minutes">
+                    <apex:inputText value="{!item.a.Minutes__c}" size="3"/>
+                </apex:column>
+                <apex:column headerValue="Case Effort Owner">
+                    <apex:inputField value="{!item.a.Owner__c}"/>
+                </apex:column> 
+                 
+                 
+            
+                
+                <apex:column headerValue="Billable">                    
+                    <apex:inputField value="{!item.a.Billable__c }" />
+                </apex:column> 
+            </apex:pageBlockTable>        
+        </apex:pageBlock> 
+        <div class="showTotal">  </div>
+        
+    </apex:form>  
+</apex:page>
